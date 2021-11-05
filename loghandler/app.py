@@ -30,7 +30,7 @@ class LogHandler:
         for handler in self.config["outputs"]:
             if "type" not in handler:
                 raise ValueError("`type` is a required parameter for outputs")
-            if handler["type"] == "stdout":
+            if handler["type"].lower() == "stdout":
                 imp = importlib.import_module("loghandler.modules.stdout")
                 self.modules["stdout"] = getattr(imp, "STDOUT")(self.config)
 
