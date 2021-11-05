@@ -26,5 +26,6 @@ setup(
     install_requires=[
         'rich==10.12.0',
         'requests==2.26.0',
+        'elasticsearch==7.15.1'
     ],
 )

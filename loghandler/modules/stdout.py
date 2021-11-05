@@ -4,8 +4,6 @@ from typing import Any
 from rich.columns import Columns
 from rich.console import Console
 
-from loghandler.core.helpers import get_level_name_from_value
-
 
 class STDOUT:
     """
@@ -19,10 +17,11 @@ class STDOUT:
         self.config = config
         self.console = Console()
 
-    def handle(self, exception: Exception, stack: Any) -> None:
+    def handle(self, level: str, exception: Exception, stack: Any) -> None:
         """
         Handle logging of message.
 
+        :param level: Log level
         :param exception: Exception object
         :param stack: Call stack
         """
@@ -34,7 +33,7 @@ class STDOUT:
         now = datetime.now()
 
         output = [
-            f"[{now.strftime('%H:%M:%S')}]\\[{origin}][{get_level_name_from_value(self.config['log_level'])}]:",
+            f"[{now.strftime('%H:%M:%S')}]\\[{origin}][{level.upper()}]:",
             f"{exception}",
         ]
 
