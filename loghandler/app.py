@@ -22,7 +22,7 @@ class LogHandler:
             raise ValueError("`outputs` is a required parameter")
 
         if not self.config["outputs"]:
-            raise ValueError("`outputs` must contain at least one ouput")
+            raise ValueError("`outputs` must contain at least one output")
 
         self.config["log_level"] = get_level_value(self.config["log_level"])
 
