@@ -1,0 +1,6 @@
+[flake8]
+application-import-names = loghandler
+import-order-style = google
+select = B,B9,BLK,C,E,F,I,S,W, D, A
+ignore = D100, ANN101, B009
+max-line-length = 120
