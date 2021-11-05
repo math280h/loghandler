@@ -33,6 +33,15 @@ class LogHandler:
             if handler["type"].lower() == "stdout":
                 imp = importlib.import_module("loghandler.modules.stdout")
                 self.modules["stdout"] = getattr(imp, "STDOUT")(self.config)
+            elif handler["type"].lower() == "elasticsearch":
+                imp = importlib.import_module("loghandler.modules.elasticsearch")
+                if "config" not in handler:
+                    raise ValueError(
+                        "`config` is a required parameter for elasticsearch"
+                    )
+                self.modules["elasticsearch"] = getattr(imp, "ElasticSearch")(
+                    self.config, handler["config"]
+                )
 
     def log(self, level: str, exception: Exception) -> None:
         """
@@ -48,4 +57,4 @@ class LogHandler:
 
         for _, module in self.modules.items():
             stack = inspect.stack()[1]
-            module.handle(exception, stack)
+            module.handle(level.lower(), exception, stack)

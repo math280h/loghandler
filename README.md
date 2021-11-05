@@ -31,12 +31,50 @@ logger.log('fatal', Exception("Something went HORRIBLY wrong"))
 ## Supported endpoints
 
 * STDOUT
+* elasticsearch
 
 ### Coming soon
 
-* elasticsearch
 * database (MySQL, PostgreSQL, SQLite, ...)
 * logstash
 * sentry
 
 And probably more.
+
+## Endpoints
+
+### Elasticsearch
+
+To use elasticsearch as a log endpoint, add the following to your outputs array.
+````python
+{
+    "type": "elasticsearch", 
+    "config": {
+        "hosts": ["https://your-es-host.com:9243"],
+        "ssl": True,
+        "verify_certs": True,
+        "index": "your-index",  # Index will be created if it doesn't exist
+        "api_key": ("your-api-key-id", "your-api-key-secret")
+    }
+}
+````
+
+Next time something is logged you should see something like the following under your index:
+````json
+{
+  "_index" : "logs",
+  "_type" : "_doc",
+  "_id" : "some-id",
+  "_score" : 1.0,
+  "_source" : {
+    "timestamp" : "2021-11-05T04:16:25.250206",
+    "level" : "DEBUG",
+    "hostname" : "YOUR-HOSTNAME",
+    "message" : "division by zero",
+    "occurred_at" : {
+      "path" : "/somepath/test.py",
+      "line" : 22
+    }
+  }
+}
+````

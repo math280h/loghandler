@@ -3,5 +3,5 @@ per-file-ignores = *__init__.py:F401
 application-import-names = loghandler
 import-order-style = google
 select = B,B9,BLK,C,E,F,I,S,W, D, A
-ignore = D100, ANN101, B009, D104
+ignore = D100, ANN101, B009, D104, W503
 max-line-length = 120
