@@ -41,9 +41,9 @@ class LogHandler:
         :param level: The level of the message.
         :param exception: The exception to log.
         """
-        level = get_level_value(level)
+        log_level = get_level_value(level)
 
-        if level < self.config["log_level"]:
+        if log_level < self.config["log_level"]:
             return
 
         for _, module in self.modules.items():
