@@ -36,8 +36,12 @@ class LogHandler:
             elif handler["type"].lower() == "elasticsearch":
                 imp = importlib.import_module("loghandler.modules.elasticsearch")
                 if "config" not in handler:
-                    raise ValueError("`config` is a required parameter for elasticsearch")
-                self.modules["elasticsearch"] = getattr(imp, "ElasticSearch")(self.config, handler["config"])
+                    raise ValueError(
+                        "`config` is a required parameter for elasticsearch"
+                    )
+                self.modules["elasticsearch"] = getattr(imp, "ElasticSearch")(
+                    self.config, handler["config"]
+                )
 
     def log(self, level: str, exception: Exception) -> None:
         """

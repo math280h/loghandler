@@ -1,2 +1,2 @@
-import loghandler.modules.stdout
 import loghandler.modules.elasticsearch
+import loghandler.modules.stdout
