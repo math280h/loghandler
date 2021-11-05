@@ -1,1 +1,1 @@
-import loghandler.app
+from loghandler.app import LogHandler
