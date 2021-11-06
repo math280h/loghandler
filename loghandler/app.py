@@ -57,9 +57,13 @@ class LogHandler:
             return
 
         for key, module in self.modules.items():
-            output = [output for output in self.config["outputs"] if output["type"] == key][0]
+            output = [
+                output for output in self.config["outputs"] if output["type"] == key
+            ][0]
 
-            if "log_level" in output and log_level < get_level_value(output["log_level"]):
+            if "log_level" in output and log_level < get_level_value(
+                output["log_level"]
+            ):
                 return
 
             stack = inspect.stack()[1]
