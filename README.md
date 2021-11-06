@@ -1,13 +1,25 @@
 # loghandler
 
-loghandler allows you to easily log messages to multiple endpoints.
+![Lint](https://github.com/math280h/loghandler/actions/workflows/type-lint.yml/badge.svg)
+![Downloads/month](https://img.shields.io/pypi/dm/loghandler)
+![Bug reports](https://img.shields.io/github/issues-search/math280h/loghandler?label=Open%20bug%20reports&query=label%3Abug)
 
-## Using
+Easy logging package for all your logging needs.
+
+## Features
+
+- Log to multiple endpoints at once
+- Support for STDOUT, Elasticsearch, and more coming soon.
+- Easy syntax
+
+## Installing
 
 Install loghandler via pip
 ```shell
 pip install loghandler
 ```
+
+## Using
 
 In your code import LogHandler and initalize it.
 ```python
@@ -28,20 +40,13 @@ You can now log messages to all your outputs via:
 logger.log('fatal', Exception("Something went HORRIBLY wrong"))
 ```
 
-## Supported endpoints
+## Endpoints
 
-* STDOUT
-* elasticsearch
-
-### Coming soon
+The following endpoints are currently in the works and will be supported soon.
 
 * database (MySQL, PostgreSQL, SQLite, ...)
 * logstash
 * sentry
-
-And probably more.
-
-## Endpoints
 
 ### General Configuration
 
