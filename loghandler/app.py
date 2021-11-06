@@ -30,6 +30,7 @@ class LogHandler:
         for handler in self.config["outputs"]:
             if "type" not in handler:
                 raise ValueError("`type` is a required parameter for outputs")
+
             if handler["type"].lower() == "stdout":
                 imp = importlib.import_module("loghandler.modules.stdout")
                 self.modules["stdout"] = getattr(imp, "STDOUT")(self.config)
@@ -55,6 +56,15 @@ class LogHandler:
         if log_level < self.config["log_level"]:
             return
 
-        for _, module in self.modules.items():
+        for key, module in self.modules.items():
+            output = [
+                output for output in self.config["outputs"] if output["type"] == key
+            ][0]
+
+            if "log_level" in output and log_level < get_level_value(
+                output["log_level"]
+            ):
+                return
+
             stack = inspect.stack()[1]
             module.handle(level.lower(), exception, stack)

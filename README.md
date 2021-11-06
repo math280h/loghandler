@@ -43,6 +43,21 @@ And probably more.
 
 ## Endpoints
 
+### General Configuration
+
+All endpoints accept a few global settings. They are shown below.
+
+`log_level`: For the output it's applied to, this will overrule the global configuration level
+
+### STDOUT
+
+To use STDOUT as a log endpoint, add the following to your outputs array.
+````python
+{
+    "type": "STDOUT"
+}
+````
+
 ### Elasticsearch
 
 To use elasticsearch as a log endpoint, add the following to your outputs array.
