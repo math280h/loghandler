@@ -46,6 +46,7 @@ class LogHandler:
             elif (
                 handler["type"].lower() == "sqlite"
                 or handler["type"].lower() == "mysql"
+                or handler["type"].lower() == "pgsql"
             ):
                 imp = importlib.import_module("loghandler.modules.database")
                 if "config" not in handler:

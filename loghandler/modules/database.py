@@ -37,15 +37,17 @@ class Database:
             self.engine = create_engine(
                 f"sqlite+pysqlite:///{db_config['db_path']}", echo=False, future=True
             )
-        elif db_type == "mysql":
+        elif db_type == "mysql" or db_type == "pgsql":
             if (
                 "connection_string" not in db_config
                 or type(db_config["connection_string"]) is not str
             ):
-                raise ValueError("mysql connection_string must be specified and a str")
+                raise ValueError(f"{db_type} connection_string must be specified and a str")
+
+            full_connection_string = f"mysql+pymysql://{db_config['connection_string']}" if db_type == "mysql" else f"postgresql://{db_config['connection_string']}"
 
             self.engine = create_engine(
-                f"mysql+pymysql://{db_config['connection_string']}",
+                full_connection_string,
                 echo=False,
                 future=True,
             )
@@ -91,10 +93,3 @@ class Database:
                     }
                 ],
             )
-
-        with self.engine.connect() as conn:
-            result = conn.execute(
-                text("SELECT message, level, origin, timestamp FROM logs")
-            )
-            for row in result:
-                print(row)

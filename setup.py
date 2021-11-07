@@ -28,6 +28,7 @@ setup(
         'requests==2.26.0',
         'elasticsearch==7.15.1',
         'SQLAlchemy==1.4.26',
-        'PyMySQL==1.0.2'
+        'PyMySQL==1.0.2',
+        'psycopg2==2.9.1'
     ],
 )
