@@ -3,29 +3,31 @@ from typing import Any
 
 from rich.console import Console
 from sqlalchemy import (
-    create_engine,
-    text,
-    Table,
     Column,
-    Integer,
-    Text,
-    String,
+    create_engine,
     DateTime,
+    Integer,
     MetaData,
+    String,
+    Table,
+    Text,
+    text,
 )
 
 
 class Database:
     """
-    STDOUT Log Handler.
+    Database Log Handler.
 
     :param config: LogHandlerConfig object
     """
 
     def __init__(self, config: dict, db_config: dict, db_type: str) -> None:
-        """Initialize STDOUT Log Handler."""
+        """Initialize Database Log Handler."""
         self.config = config
         self.console = Console()
+
+        self.db_config = db_config
 
         if "table_name" not in db_config or type(db_config["table_name"]) is not str:
             raise ValueError("database table_name must be specified and a str")
@@ -42,9 +44,15 @@ class Database:
                 "connection_string" not in db_config
                 or type(db_config["connection_string"]) is not str
             ):
-                raise ValueError(f"{db_type} connection_string must be specified and a str")
+                raise ValueError(
+                    f"{db_type} connection_string must be specified and a str"
+                )
 
-            full_connection_string = f"mysql+pymysql://{db_config['connection_string']}" if db_type == "mysql" else f"postgresql://{db_config['connection_string']}"
+            full_connection_string = (
+                f"mysql+pymysql://{db_config['connection_string']}"
+                if db_type == "mysql"
+                else f"postgresql://{db_config['connection_string']}"
+            )
 
             self.engine = create_engine(
                 full_connection_string,
@@ -73,7 +81,6 @@ class Database:
         :param exception: Exception object
         :param stack: Call stack
         """
-
         filename = stack.filename.replace("\\", "/")
         origin = f"{filename}:{stack.lineno}"
         now = datetime.now()
@@ -81,7 +88,7 @@ class Database:
         with self.engine.begin() as conn:
             conn.execute(
                 text(
-                    "INSERT INTO logs (message, level, origin, timestamp) "
+                    f"INSERT INTO {self.db_config['table_name']} (message, level, origin, timestamp) "
                     "VALUES (:message, :level, :origin, :timestamp)"
                 ),
                 [
