@@ -43,10 +43,15 @@ class LogHandler:
                 self.modules["elasticsearch"] = getattr(imp, "ElasticSearch")(
                     self.config, handler["config"]
                 )
-            elif handler["type"].lower() == "sqlite" or handler["type"].lower() == "mysql":
+            elif (
+                handler["type"].lower() == "sqlite"
+                or handler["type"].lower() == "mysql"
+            ):
                 imp = importlib.import_module("loghandler.modules.database")
                 if "config" not in handler:
-                    raise ValueError(f"`config` is a required parameter for {handler['type'].lower()}")
+                    raise ValueError(
+                        f"`config` is a required parameter for {handler['type'].lower()}"
+                    )
                 self.modules[handler["type"].lower()] = getattr(imp, "Database")(
                     self.config, handler["config"], handler["type"].lower()
                 )

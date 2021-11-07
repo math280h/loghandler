@@ -38,11 +38,16 @@ class Database:
                 f"sqlite+pysqlite:///{db_config['db_path']}", echo=False, future=True
             )
         elif db_type == "mysql":
-            if "connection_string" not in db_config or type(db_config["connection_string"]) is not str:
+            if (
+                "connection_string" not in db_config
+                or type(db_config["connection_string"]) is not str
+            ):
                 raise ValueError("mysql connection_string must be specified and a str")
 
             self.engine = create_engine(
-                f"mysql+pymysql://{db_config['connection_string']}", echo=False, future=True
+                f"mysql+pymysql://{db_config['connection_string']}",
+                echo=False,
+                future=True,
             )
         metadata = MetaData()
 
