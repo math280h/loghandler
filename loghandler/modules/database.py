@@ -1,0 +1,95 @@
+from datetime import datetime
+from typing import Any
+
+from rich.console import Console
+from sqlalchemy import (
+    create_engine,
+    text,
+    Table,
+    Column,
+    Integer,
+    Text,
+    String,
+    DateTime,
+    MetaData,
+)
+
+
+class Database:
+    """
+    STDOUT Log Handler.
+
+    :param config: LogHandlerConfig object
+    """
+
+    def __init__(self, config: dict, db_config: dict, db_type: str) -> None:
+        """Initialize STDOUT Log Handler."""
+        self.config = config
+        self.console = Console()
+
+        if "table_name" not in db_config or type(db_config["table_name"]) is not str:
+            raise ValueError("database table_name must be specified and a str")
+
+        if db_type == "sqlite":
+            if "db_path" not in db_config or type(db_config["db_path"]) is not str:
+                raise ValueError("sqlite db_path must be specified and a str")
+
+            self.engine = create_engine(
+                f"sqlite+pysqlite:///{db_config['db_path']}", echo=False, future=True
+            )
+        elif db_type == "mysql":
+            if "connection_string" not in db_config or type(db_config["connection_string"]) is not str:
+                raise ValueError("mysql connection_string must be specified and a str")
+
+            self.engine = create_engine(
+                f"mysql+pymysql://{db_config['connection_string']}", echo=False, future=True
+            )
+        metadata = MetaData()
+
+        Table(
+            db_config["table_name"],
+            metadata,
+            Column("id", Integer, primary_key=True),
+            Column("message", Text),
+            Column("level", String(7)),
+            Column("origin", String(255)),
+            Column("timestamp", DateTime),
+        )
+
+        metadata.create_all(self.engine)
+
+    def handle(self, level: str, exception: Exception, stack: Any) -> None:
+        """
+        Handle logging of message.
+
+        :param level: Log level
+        :param exception: Exception object
+        :param stack: Call stack
+        """
+
+        filename = stack.filename.replace("\\", "/")
+        origin = f"{filename}:{stack.lineno}"
+        now = datetime.now()
+
+        with self.engine.begin() as conn:
+            conn.execute(
+                text(
+                    "INSERT INTO logs (message, level, origin, timestamp) "
+                    "VALUES (:message, :level, :origin, :timestamp)"
+                ),
+                [
+                    {
+                        "message": str(exception),
+                        "level": level.upper(),
+                        "origin": origin,
+                        "timestamp": now,
+                    }
+                ],
+            )
+
+        with self.engine.connect() as conn:
+            result = conn.execute(
+                text("SELECT message, level, origin, timestamp FROM logs")
+            )
+            for row in result:
+                print(row)
