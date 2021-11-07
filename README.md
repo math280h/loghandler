@@ -9,7 +9,7 @@ Easy logging package for all your logging needs.
 ## Features
 
 - Log to multiple endpoints at once
-- Support for STDOUT, Elasticsearch, and more coming soon.
+- Support for STDOUT, Elasticsearch, Database (MySQL, PostgreSQL, SQLite), and more coming soon.
 - Easy syntax
 
 ## Installing
@@ -44,7 +44,6 @@ logger.log('fatal', Exception("Something went HORRIBLY wrong"))
 
 The following endpoints are currently in the works and will be supported soon.
 
-* database (MySQL, PostgreSQL, SQLite, ...)
 * logstash
 * sentry
 
@@ -97,4 +96,77 @@ Next time something is logged you should see something like the following under 
     }
   }
 }
+````
+
+### Database
+
+<details>
+<summary>Table Structure</summary>
+
+```python
+Table(
+    db_config["table_name"],
+    metadata,
+    Column("id", Integer, primary_key=True),
+    Column("message", Text),
+    Column("level", String),
+    Column("origin", String),
+    Column("timestamp", DateTime),
+)
+```
+
+</details>
+
+#### sqlite
+
+To use sqlite as a log endpoint, add the following to your outputs array.
+````python
+{
+    "type": "sqlite", 
+    "config": {
+        "table_name": "logs",  # Will be created if it doesn't exist
+        "db_path": "/path/to/db.sqlite",  # Will be created if it doesn't exist
+    }
+}
+````
+
+Next time something is logged you should see something like the following under your table:
+````python
+('division by zero', 'DEBUG', '/somepath/test.py:31', '2021-11-07 01:27:24.755989')
+````
+
+#### mysql
+
+To use mysql as a log endpoint, add the following to your outputs array.
+````python
+{
+    "type": "mysql",
+    "config": {
+        "table_name": "logs",
+        "connection_string": "root:example@localhost:3306/example_db"
+    }
+}
+````
+
+Next time something is logged you should see something like the following under your table:
+````
+division by zero | DEBUG | /somepath/test.py:22 | 2021-11-07 01:46:58
+````
+
+#### pgsql (PostgreSQL)
+
+To use pgsql as a log endpoint, add the following to your outputs array.
+````python
+{
+    "type": "pgsql",
+    "config": {
+        "table_name": "logs",
+        "connection_string": "postgres:postgres@localhost:5432/example"
+    }
+}
+````
+
+Next time something is logged you should see something like the following under your table:
+````
+division by zero | DEBUG | /somepath/test.py:22 | 2021-11-07 01:46:58
 ````
