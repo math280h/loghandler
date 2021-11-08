@@ -66,18 +66,16 @@ class LogHandler:
         """
         log_level = get_level_value(level)
 
-        if log_level < self.config["log_level"]:
-            return
-
         for key, module in self.modules.items():
             output = [
                 output for output in self.config["outputs"] if output["type"] == key
             ][0]
 
-            if "log_level" in output and log_level < get_level_value(
-                output["log_level"]
-            ):
-                return
+            if "log_level" in output:
+                if log_level < get_level_value(output["log_level"]):
+                    continue
+            elif log_level < self.config["log_level"]:
+                continue
 
             stack = inspect.stack()[1]
             module.handle(level.lower(), exception, stack)
