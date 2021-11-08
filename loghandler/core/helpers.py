@@ -1,3 +1,14 @@
+from dataclasses import dataclass
+
+
+@dataclass
+class InternalStack:
+    """Internal Stack."""
+
+    filename: str = "Internal"
+    lineno: str = "Internal"
+
+
 def get_level_value(level: str) -> int:
     """
     Get the level value of a log level.

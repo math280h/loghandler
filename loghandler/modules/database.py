@@ -14,6 +14,8 @@ from sqlalchemy import (
     text,
 )
 
+from loghandler.core.exceptions import ConfigurationException, SendException
+
 
 class Database:
     """
@@ -28,13 +30,18 @@ class Database:
         self.console = Console()
 
         self.db_config = db_config
+        self.db_type = db_type
 
         if "table_name" not in db_config or type(db_config["table_name"]) is not str:
-            raise ValueError("database table_name must be specified and a str")
+            raise ConfigurationException(
+                self.db_type, "database table_name must be specified and a str"
+            )
 
         if db_type == "sqlite":
             if "db_path" not in db_config or type(db_config["db_path"]) is not str:
-                raise ValueError("sqlite db_path must be specified and a str")
+                raise ConfigurationException(
+                    self.db_type, "db_path must be specified and a str"
+                )
 
             self.engine = create_engine(
                 f"sqlite+pysqlite:///{db_config['db_path']}", echo=False, future=True
@@ -44,8 +51,8 @@ class Database:
                 "connection_string" not in db_config
                 or type(db_config["connection_string"]) is not str
             ):
-                raise ValueError(
-                    f"{db_type} connection_string must be specified and a str"
+                raise ConfigurationException(
+                    self.db_type, "connection_string must be specified and a str"
                 )
 
             full_connection_string = (
@@ -85,18 +92,21 @@ class Database:
         origin = f"{filename}:{stack.lineno}"
         now = datetime.now()
 
-        with self.engine.begin() as conn:
-            conn.execute(
-                text(
-                    f"INSERT INTO {self.db_config['table_name']} (message, level, origin, timestamp) "
-                    "VALUES (:message, :level, :origin, :timestamp)"
-                ),
-                [
-                    {
-                        "message": str(exception),
-                        "level": level.upper(),
-                        "origin": origin,
-                        "timestamp": now,
-                    }
-                ],
-            )
+        try:
+            with self.engine.begin() as conn:
+                conn.execute(
+                    text(
+                        f"INSERT INTO {self.db_config['table_name']} (message, level, origin, timestamp) "
+                        "VALUES (:message, :level, :origin, :timestamp)"
+                    ),
+                    [
+                        {
+                            "message": str(exception),
+                            "level": level.upper(),
+                            "origin": origin,
+                            "timestamp": now,
+                        }
+                    ],
+                )
+        except Exception as e:
+            raise SendException(self.db_type, e) from e

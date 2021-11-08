@@ -4,6 +4,8 @@ from typing import Any
 from rich.columns import Columns
 from rich.console import Console
 
+from loghandler.core.exceptions import SendException
+
 
 class STDOUT:
     """
@@ -25,16 +27,25 @@ class STDOUT:
         :param exception: Exception object
         :param stack: Call stack
         """
-        filename = stack.filename.split("/")[-1]
-        if len(filename) == len(stack.filename):
-            filename = filename = stack.filename.split("\\")[-1]
+        try:
+            now = datetime.now()
 
-        origin = f"{filename}:{stack.lineno}"
-        now = datetime.now()
+            if stack.filename != "Internal":
+                filename = stack.filename.split("/")[-1]
+                if len(filename) == len(stack.filename):
+                    filename = filename = stack.filename.split("\\")[-1]
 
-        output = [
-            f"[{now.strftime('%H:%M:%S')}]\\[{origin}][{level.upper()}]:",
-            f"{exception}",
-        ]
+                origin = f"{filename}:{stack.lineno}"
+                output = [
+                    f"[{now.strftime('%H:%M:%S')}]\\[{origin}][{level.upper()}]:",
+                    f"{exception}",
+                ]
+            else:
+                output = [
+                    f"[{now.strftime('%H:%M:%S')}]\\[loghandler][{level.upper()}]:",
+                    f"{exception}",
+                ]
 
-        self.console.print(Columns(output))
+            self.console.print(Columns(output))
+        except Exception as e:
+            raise SendException("stdout", e) from e

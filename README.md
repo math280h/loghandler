@@ -11,6 +11,7 @@ Easy logging package for all your logging needs.
 - Log to multiple endpoints at once
 - Support for STDOUT, Elasticsearch, Database (MySQL, PostgreSQL, SQLite), and more coming soon.
 - Easy syntax
+- Fail-over reporting (If one endpoint fails it will be reported to the other endpoints)
 
 ## Installing
 
@@ -52,6 +53,10 @@ The following endpoints are currently in the works and will be supported soon.
 All endpoints accept a few global settings. They are shown below.
 
 `log_level`: For the output it's applied to, this will overrule the global configuration level
+
+`report_error`: If an output fails to send a message, this error will be reported to the other outputs, by default this is True. (It's not recommended to turn this off.)
+
+`retry_after`: Defines how long an output should wait before retrying, by default this is 15s (Defined in seconds)
 
 ### STDOUT
 
