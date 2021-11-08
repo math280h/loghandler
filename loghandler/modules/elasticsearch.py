@@ -4,6 +4,8 @@ from typing import Any
 
 from elasticsearch import Elasticsearch
 
+from loghandler.core.exceptions import ConfigurationException, SendException
+
 
 class ElasticSearch:
     """
@@ -18,25 +20,35 @@ class ElasticSearch:
         self.es_config = es_config
 
         if "hosts" not in self.es_config or type(self.es_config["hosts"]) is not list:
-            raise ValueError("elasticsearch hosts must be specified and a list")
+            raise ConfigurationException(
+                "elasticsearch", "hosts must be specified and a list"
+            )
 
         if "index" not in self.es_config or type(self.es_config["index"]) is not str:
-            raise ValueError("elasticsearch index must be specified and a str")
+            raise ConfigurationException(
+                "elasticsearch", "index must be specified and a str"
+            )
 
         if "ssl" not in self.es_config or type(self.es_config["ssl"]) is not bool:
-            raise ValueError("elasticsearch ssl must be specified and a bool")
+            raise ConfigurationException(
+                "elasticsearch", "ssl must be specified and a bool"
+            )
 
         if (
             "verify_certs" not in self.es_config
             or type(self.es_config["verify_certs"]) is not bool
         ):
-            raise ValueError("elasticsearch verify_certs must be specified and a bool")
+            raise ConfigurationException(
+                "elasticsearch", "verify_certs must be specified and a bool"
+            )
 
         if (
             "api_key" not in self.es_config
             or type(self.es_config["api_key"]) is not tuple
         ):
-            raise ValueError("elasticsearch api_key must be specified and a tuple")
+            raise ConfigurationException(
+                "elasticsearch", "api_key must be specified and a tuple"
+            )
 
         self.elasticsearch = Elasticsearch(
             hosts=es_config["hosts"],
@@ -70,4 +82,4 @@ class ElasticSearch:
                 },
             )
         except Exception as e:
-            print(e)
+            raise SendException("elasticsearch", e) from e
