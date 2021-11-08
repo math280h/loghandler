@@ -24,7 +24,7 @@ setup(
     long_description_content_type="text/markdown",
 
     install_requires=[
-        'rich==10.12.0',
+        'rich==10.13.0',
         'requests==2.26.0',
         'elasticsearch==7.15.1',
         'SQLAlchemy==1.4.26',
