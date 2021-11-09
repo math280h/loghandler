@@ -1,7 +1,6 @@
 from datetime import datetime
 from typing import Any
 
-from rich.console import Console
 from sqlalchemy import (
     Column,
     create_engine,
@@ -27,7 +26,6 @@ class Database:
     def __init__(self, config: dict, db_config: dict, db_type: str) -> None:
         """Initialize Database Log Handler."""
         self.config = config
-        self.console = Console()
 
         self.db_config = db_config
         self.db_type = db_type
