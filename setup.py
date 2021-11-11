@@ -26,7 +26,7 @@ setup(
     install_requires=[
         'rich==10.13.0',
         'requests==2.26.0',
-        'elasticsearch==7.15.1',
+        'elasticsearch==7.15.2',
         'SQLAlchemy==1.4.26',
         'PyMySQL==1.0.2',
         'psycopg2==2.9.1'
