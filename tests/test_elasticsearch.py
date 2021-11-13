@@ -53,8 +53,7 @@ class TestElasticSearch(unittest.TestCase):
         es = Elasticsearch(
             hosts=["localhost:9200"],
             use_ssl=False,
-            verify_certs=False,
-            api_key=("none", "none"),
+            verify_certs=False
         )
 
         try:
@@ -62,4 +61,5 @@ class TestElasticSearch(unittest.TestCase):
         except Exception as e:
             print(es.search(index="logs", query={"match_all": {}}))
             self.fail(e)
+
         assert res["_source"]["message"] == "This is working!"
