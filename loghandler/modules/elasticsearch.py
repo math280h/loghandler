@@ -68,7 +68,7 @@ class ElasticSearch:
         :param stack: Call stack
         """
         try:
-            self.elasticsearch.index(
+            res = self.elasticsearch.index(
                 index=self.es_config["index"],
                 document={
                     "timestamp": datetime.utcnow(),
@@ -81,5 +81,7 @@ class ElasticSearch:
                     },
                 },
             )
+            print(res)
+            exit(1)
         except Exception as e:
             raise SendException("elasticsearch", e) from e
