@@ -60,6 +60,6 @@ class TestElasticSearch(unittest.TestCase):
         try:
             res = es.search(index="logs", query={"match_all": {}})['hits']['hits'][0]
         except Exception as e:
-            print(es.search(index="logs", query={"match_all": {}})['hits']['hits'])
+            print(es.search(index="logs", query={"match_all": {}}))
             self.fail(e)
         assert res["_source"]["message"] == "This is working!"
