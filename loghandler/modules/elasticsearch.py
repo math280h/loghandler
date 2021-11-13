@@ -82,6 +82,5 @@ class ElasticSearch:
                 },
             )
             print(res)
-            exit(1)
         except Exception as e:
             raise SendException("elasticsearch", e) from e
