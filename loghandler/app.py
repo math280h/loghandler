@@ -130,7 +130,7 @@ class LogHandler:
                     continue
                 else:
                     if len(self.modules.keys()) == 1:
-                        print(e)
+                        print(e, flush=True)
                         continue
                     self.log(e.level, e, [e.module], internal=True)
                     self.failing_outputs[e.module] = {
