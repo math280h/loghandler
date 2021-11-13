@@ -9,6 +9,8 @@ from loghandler.modules.stdout import STDOUT
 
 
 class TestStdout(unittest.TestCase):
+    """Test the STDOUT Module."""
+
     def test_init(self):
         """Test that the stdout module is correctly loaded."""
         logger = LogHandler({

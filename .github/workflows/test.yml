@@ -23,6 +23,10 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install -r dev-requirements.txt
 
+    - name: Start containers
+      run: |
+        - docker-compose up -d
+
     - name: Run tests
       run: |
         python -m unittest discover -s tests -p 'test_*.py'
