@@ -57,5 +57,9 @@ class TestElasticSearch(unittest.TestCase):
             api_key=("none", "none"),
         )
 
-        res = es.search(index="logs", query={"match_all": {}})['hits']['hits'][0]
+        try:
+            res = es.search(index="logs", query={"match_all": {}})['hits']['hits'][0]
+        except Exception as e:
+            print(es.search(index="logs", query={"match_all": {}})['hits']['hits'])
+            self.fail(e)
         assert res["_source"]["message"] == "This is working!"
