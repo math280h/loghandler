@@ -37,9 +37,6 @@ class TestElasticSearch(unittest.TestCase):
             "log_level": "TRACE",
             "outputs": [
                 {
-                    "type": "stdout"
-                },
-                {
                     "type": "elasticsearch",
                     "config": {
                         "hosts": ["localhost:9200"],
