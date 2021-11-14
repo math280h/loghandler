@@ -1,5 +1,7 @@
 import unittest
 
+from sqlalchemy import create_engine, text
+
 from loghandler import LogHandler
 from loghandler.modules.database import Database
 
@@ -60,6 +62,18 @@ class TestDatabase(unittest.TestCase):
 
         logger.log("DEBUG", Exception("This is working!"))
 
+        engine = create_engine(
+            f"sqlite+pysqlite:////tmp/db.sqlite",
+            echo=False,
+            future=True,
+        )
+
+        with engine.begin() as conn:
+            result = conn.execute(text("SELECT * FROM logs"))
+
+            for item in result:
+                assert item[1] == "This is working!"
+
     def test_mysql_output(self):
         """Test that mysql provides the correct output."""
         logger = LogHandler({
@@ -77,6 +91,18 @@ class TestDatabase(unittest.TestCase):
 
         logger.log("DEBUG", Exception("This is working!"))
 
+        engine = create_engine(
+            "mysql+pymysql://root:password@localhost:3306/test",
+            echo=False,
+            future=True,
+        )
+
+        with engine.begin() as conn:
+            result = conn.execute(text("SELECT * FROM logs"))
+
+            for item in result:
+                assert item[1] == "This is working!"
+
     def test_pgsql_output(self):
         """Test that pgsql provides the correct output."""
         logger = LogHandler({
@@ -93,3 +119,15 @@ class TestDatabase(unittest.TestCase):
         })
 
         logger.log("DEBUG", Exception("This is working!"))
+
+        engine = create_engine(
+            "postgresql://test:password@localhost:5432/test",
+            echo=False,
+            future=True,
+        )
+
+        with engine.begin() as conn:
+            result = conn.execute(text("SELECT * FROM logs"))
+
+            for item in result:
+                assert item[1] == "This is working!"
