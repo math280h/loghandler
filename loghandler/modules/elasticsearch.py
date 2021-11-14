@@ -56,7 +56,8 @@ class ElasticSearch:
             or self.es_config["refresh"] not in ["true", "false", "wait_for"]
         ):
             raise ConfigurationException(
-                "elasticsearch", "refresh must be specified, a str, and either 'true', 'false' or 'wait_for'"
+                "elasticsearch",
+                "refresh must be specified, a str, and either 'true', 'false' or 'wait_for'",
             )
 
         self.elasticsearch = Elasticsearch(
@@ -89,7 +90,7 @@ class ElasticSearch:
                         "line": stack.lineno,
                     },
                 },
-                refresh=self.es_config["refresh"]
+                refresh=self.es_config["refresh"],
             )
         except Exception as e:
             raise SendException("elasticsearch", e) from e
