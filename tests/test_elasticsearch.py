@@ -45,6 +45,7 @@ class TestElasticSearch(unittest.TestCase):
                         "ssl": False,
                         "verify_certs": False,
                         "index": "logs",
+                        "refresh": "wait_for",
                         "api_key": ("none", "none")
                     }
                 }

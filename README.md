@@ -77,6 +77,7 @@ To use elasticsearch as a log endpoint, add the following to your outputs array.
         "hosts": ["https://your-es-host.com:9243"],
         "ssl": True,
         "verify_certs": True,
+        "refresh": "wait_for",  # Must be either "true", "false" or "wait_for"
         "index": "your-index",  # Index will be created if it doesn't exist
         "api_key": ("your-api-key-id", "your-api-key-secret")
     }
