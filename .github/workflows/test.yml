@@ -23,6 +23,21 @@ jobs:
           --health-retries 10
         ports:
           - "9200:9200"
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: "password"
+          MYSQL_DATABASE: "test"
+        ports:
+          - "3306:3306"
+      postgres:
+        image: postgres:14.1
+        env:
+          POSTGRES_USER: "test"
+          POSTGRES_PASSWORD: "password"
+          POSTGRES_DB: "test"
+        ports:
+          - "5432:5432"
 
     steps:
     - uses: actions/checkout@v2
