@@ -1,6 +1,7 @@
 # loghandler
 
 ![Lint](https://github.com/math280h/loghandler/actions/workflows/type-lint.yml/badge.svg)
+![Tests](https://github.com/math280h/loghandler/actions/workflows/test.yml/badge.svg)
 ![Downloads/month](https://img.shields.io/pypi/dm/loghandler)
 ![Bug reports](https://img.shields.io/github/issues-search/math280h/loghandler?label=Open%20bug%20reports&query=label%3Abug)
 
