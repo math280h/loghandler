@@ -50,6 +50,16 @@ class ElasticSearch:
                 "elasticsearch", "api_key must be specified and a tuple"
             )
 
+        if (
+            "refresh" not in self.es_config
+            or type(self.es_config["refresh"]) is not str
+            or self.es_config["refresh"] not in ["true", "false", "wait_for"]
+        ):
+            raise ConfigurationException(
+                "elasticsearch",
+                "refresh must be specified, a str, and either 'true', 'false' or 'wait_for'",
+            )
+
         self.elasticsearch = Elasticsearch(
             hosts=es_config["hosts"],
             use_ssl=es_config["ssl"],
@@ -80,6 +90,7 @@ class ElasticSearch:
                         "line": stack.lineno,
                     },
                 },
+                refresh=self.es_config["refresh"],
             )
         except Exception as e:
             raise SendException("elasticsearch", e) from e

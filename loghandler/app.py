@@ -129,6 +129,9 @@ class LogHandler:
                 if "report_error" in output and output["report_error"] is False:
                     continue
                 else:
+                    if len(self.modules.keys()) == 1:
+                        print(e, flush=True)
+                        continue
                     self.log(e.level, e, [e.module], internal=True)
                     self.failing_outputs[e.module] = {
                         "failure_timestamp": datetime.utcnow(),
