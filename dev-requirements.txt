@@ -1,5 +1,5 @@
 nox==2021.10.1
-rich==10.13.0
+rich==10.15.0
 requests==2.26.0
 elasticsearch==7.15.2
 SQLAlchemy==1.4.27
