@@ -27,7 +27,7 @@ setup(
         'rich==10.15.2',
         'requests==2.26.0',
         'elasticsearch==7.15.2',
-        'SQLAlchemy==1.4.27',
+        'SQLAlchemy==1.4.28',
         'PyMySQL==1.0.2',
         'psycopg2==2.9.2',
         'cryptography==36.0.0'
