@@ -29,7 +29,7 @@ setup(
         'elasticsearch==7.15.2',
         'SQLAlchemy==1.4.32',
         'PyMySQL==1.0.2',
-        'psycopg2==2.9.2',
+        'psycopg2==2.9.3',
         'cryptography==36.0.0'
     ],
 )
