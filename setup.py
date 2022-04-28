@@ -30,6 +30,6 @@ setup(
         'SQLAlchemy==1.4.32',
         'PyMySQL==1.0.2',
         'psycopg2==2.9.3',
-        'cryptography==36.0.2'
+        'cryptography==37.0.1'
     ],
 )
