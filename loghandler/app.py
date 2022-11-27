@@ -98,7 +98,7 @@ class LogHandler:
                     continue
 
             output = [
-                output for output in self.config["outputs"] if output["type"] == key
+                output for output in self.config["outputs"] if output["type"].lower() == key
             ][0]
 
             if "log_level" in output:
