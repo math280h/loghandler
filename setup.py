@@ -24,12 +24,12 @@ setup(
     long_description_content_type="text/markdown",
 
     install_requires=[
-        'rich==12.0.0',
-        'requests==2.27.1',
-        'elasticsearch==7.15.2',
-        'SQLAlchemy==1.4.32',
+        'rich==12.6.0',
+        'requests==2.28.1',
+        'elasticsearch==8.5.2',
+        'SQLAlchemy==1.4.44',
         'PyMySQL==1.0.2',
-        'psycopg2==2.9.3',
-        'cryptography==36.0.2'
+        'psycopg2-binary==2.9.3',
+        'cryptography==38.0.3'
     ],
 )
